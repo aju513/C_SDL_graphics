@@ -18,24 +18,52 @@ void screen(){
 	Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	SDL_Renderer *renderer = SDL_CreateRenderer(window,-1,render_flags);
 	SDL_SetRenderDrawColor(renderer,0,0,255,0);
+	int b=255,a=0,c=0;
+	int x=0,y=0;
+	bool falling=true;
 	while(running){
+		//
+		if(falling==true){
+			x+=1;
+			y+=1;
+			
+			if (x>200 && y>200){
+			falling=false;
+			a+=10;
+			b=10;
+			c+=20;
+
+		}
+		}
+		//
+		if(falling==false){
+			x-=1;
+			y-=1;
+			if(x<0 && y<0){
+				falling=true;
+				a+=10;
+				b=10;
+				c+=20;
+			}
+		}
+			
+		
 		if(SDL_PollEvent(&event)){
 			if (event.type==SDL_QUIT){
 				running=false;
+			
 			}
+			 
+			
 		}
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
 		SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(renderer,b, a, c, 255); 
 		
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); 
-		SDL_Rect rect = {50, 50, 200, 200};
-        	SDL_RenderFillRect(renderer, &rect);
-		
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Red color
-		SDL_Rect rect2 = {250, 300, 200, 250};
-		SDL_RenderDrawRect(renderer, &rect2);
 
+		
+		SDL_Rect rect = {x, y, 200, 200};
+        	SDL_RenderFillRect(renderer, &rect);
 
        
         	SDL_RenderPresent(renderer);
